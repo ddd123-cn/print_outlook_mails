@@ -30,48 +30,48 @@ for Account_Name in Accounts:
                     Level_1_FolderName_2 = Level_1_Name.Name # 记录一级目录名称
                     Level_2_FolderName_2 = Level_2_Name.Name # 记录二级目录名称
                     if (hasattr(yy, 'ReceivedTime')):
-                        ReceivedTime_2 = str(yy.ReceivedTime)[:-6]  # 接收时间
-                        weeks = datetime.date.isocalendar(yy.ReceivedTime)
-                        weeks = weeks[1]
-                        #Receivedtime = 
-                        #if (abs(datetime.datetime.now() - yy.ReceivedTime) < 30)
+#                        ReceivedTime_2 = str(yy.ReceivedTime)[:-6]  # 接收时间
+                        R = yy.ReceivedTime
+                        R = datetime.date(R.year, R.month, R.day)
+                        datedelta = datetime.date.today() - R
+                        if (datedelta < datetime.timedelta(60)) and (datedelta > datetime.timedelta(0)):
+                            weeks = datetime.date.isocalendar(yy.ReceivedTime)
+                            weeks = weeks[1]
+                        else:
+                            weeks = ''
                     else:
-                        ReceivedTime_2 = ''
-                    if (hasattr(yy, 'SenderName')):  # 发件人
-                        SenderName_2 = yy.SenderName
-                    else:
-                        SenderName_2 = ''
-                    if (hasattr(yy, 'Subject')):  # 主题
-                        Subject_2 = yy.Subject
-                    else:
-                        Subject_2 = ''
-                    if (hasattr(yy, 'EntryID')):  # 邮件MessageID
-                        MessageID_2 = yy.EntryID
-                    else:
-                        MessageID_2 = ''
+                        R = ''
+#                    if (hasattr(yy, 'SenderName')):  # 发件人
+#                        SenderName_2 = yy.SenderName
+#                    else:
+#                        SenderName_2 = ''
+#                    if (hasattr(yy, 'Subject')):  # 主题
+#                        Subject_2 = yy.Subject
+#                    else:
+#                        Subject_2 = ''
                     if (hasattr(yy, 'ConversationTopic')):  # 会话主题
                         ConversationTopic_2 = yy.ConversationTopic
                         ConversationTopic_2 = ConversationTopic_2.split(']',1)  #这个分割用的字符']'消失了
-                        RTT = ConversationTopic_2[0]
+                        if (yy.ConversationTopic[5] == '#'):
+                            RTT = ConversationTopic_2[0]
+                        else:
+                            RTT = ''
                     else:
                         ConversationTopic_2 = ''
-                    if (hasattr(yy, 'ConversationID')):  # 会话ID
-                        ConversationID_2 = yy.ConversationID
-                    else:
-                        ConversationID_2 = ''
-                    if (hasattr(yy, 'ConversationIndex')):  # 会话记录相对位置
-                        ConversationIndex_2 = yy.ConversationIndex
-                    else:
-                        ConversationIndex_2 = ''
                     if (hasattr(yy, 'Body')):  # 邮件正文内容
                         EmailBody_2 = yy.Body
                         EmailBody_2 = EmailBody_2.splitlines(True)  #这个True会保留换行符,后面截取到最后一个字符的时候没有它就把内容最后一个字符给切没了
                         subject = EmailBody_2[0]
                         subject = subject[14:-1]
+                        if (RTT == ''):
+                            RTT = EmailBody_2[4]
+                            RTT = '[' + RTT[0:4] + ' ' + RTT[5:12]
+                            subject = EmailBody_2[6]
+                            subject = subject[7:-1]
                     else:
                         EmailBody_2 = ''
-
-                    print ('\tW' + str(weeks), '\t', RTT + ']' + subject,'\t')
+                    if (weeks != '') :
+                        print ('\tW' + str(weeks), '\t', RTT + ']' + subject,'\t')
         else:
             pass
 
