@@ -30,13 +30,12 @@ for Account_Name in Accounts:
                     Level_1_FolderName_2 = Level_1_Name.Name # 记录一级目录名称
                     Level_2_FolderName_2 = Level_2_Name.Name # 记录二级目录名称
                     if (hasattr(yy, 'ReceivedTime')):
-#                        ReceivedTime_2 = str(yy.ReceivedTime)[:-6]  # 接收时间
                         R = yy.ReceivedTime
-                        R = datetime.date(R.year, R.month, R.day)
-                        datedelta = datetime.date.today() - R
+                        R = datetime.date(R.year, R.month, R.day)   #生成收件日期(datetime.date的格式)
+                        datedelta = datetime.date.today() - R       #距离今天有多久?(datetime.timedelta的格式)
                         if (datedelta < datetime.timedelta(60)) and (datedelta > datetime.timedelta(0)):
-                            weeks = datetime.date.isocalendar(yy.ReceivedTime)
-                            weeks = weeks[1]
+                            weeks = datetime.date.isocalendar(yy.ReceivedTime)  #转换成ISO日历格式
+                            weeks = weeks[1]                                    #ISO日历格式的第二项就是第几周的信息
                         else:
                             weeks = ''
                     else:
